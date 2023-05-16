@@ -1,0 +1,67 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (metadatas == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in metadatas)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td><img src="@item.FilePath" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+    private MetaData[]? metadatas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        metadatas = await Http.GetFromJsonAsync<MetaData[]>("/icons/emoji/emoji.json");
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    public class MetaData
+    {
+        public string FilePath { get; set; }
+        public string ImageType { get; set; }
+        public string ImageExt { get; set; }
+        public string Name { get; set; }
+        public string Keywords { get; set; }
+        public string Group { get; set; }
+
+    }
+
+}

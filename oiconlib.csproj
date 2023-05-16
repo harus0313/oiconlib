@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\FetchData - Copy.razor.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\FetchData - Copy.razor.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.15" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\icons\eva-icons\fill\" />
+    <Folder Include="wwwroot\icons\eva-icons\outline\" />
+    <Folder Include="wwwroot\icons\ionicons\" />
+    <Folder Include="wwwroot\icons\css.gg\" />
+    <Folder Include="wwwroot\icons\feather\" />
+    <Folder Include="wwwroot\icons\bootstrap\" />
+    <Folder Include="wwwroot\icons\RemixIcon\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,225 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject IJSRuntime JS;
+@using System.Collections.Generic;
+
+<PageTitle>絵文字サーチ</PageTitle>
+
+<nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
+    <div class="container-fluid">
+
+        <div class="input-group flex-nowrap" style="width: 60%">
+            <span class="input-group-text" id="addon-wrapping"><img src="/icons/emoji/Magnifying glass tilted left/Color/magnifying_glass_tilted_left_color.svg" /></span>
+            <input type="search" class="form-control" placeholder="絵文字検索" aria-label="searchText" aria-describedby="addon-wrapping" @bind-value="searchStr" @bind-value:event="oninput">
+        </div>
+
+<!--
+        <a class="navbar-brand" href="#">
+            <img src="/icons/emoji/Elephant/3D/elephant_3d.png" width="30" height="24" />
+            絵文字サーチ
+        </a>
+-->
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+<!--
+                <li class="nav-item">
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><img src="/icons/emoji/Magnifying glass tilted left/Color/magnifying_glass_tilted_left_color.svg" /></span>
+                        <input type="search" class="form-control" placeholder="検索文字列" aria-label="searchText" aria-describedby="addon-wrapping" @bind-value="searchStr" @bind-value:event="oninput">
+                    </div>
+                </li>
+-->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#openSourceModal">オープンソースライブラリ一覧</a>
+                </li>
+                <li>
+                    <a class="navbar-brand" href="https://usefuledge.com" target="_blank">
+                        <img src="/usefuledgeicon.png" width="30" height="24" />    
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div style="padding-top: 120px;">
+    <h3>絵文字サーチ</h3>
+    <p>絵文字をPNGやSVGで公開しています。使用しているライブラリはMITライセンスで公開されているものです。詳細はオープンソースライブラリ一覧を参照してください。</p>
+</div>
+
+
+
+<!-- OpenSourceModal -->
+<div class="modal fade" id="openSourceModal" tabindex="-1" aria-labelledby="openSourceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="openSourceModalLabel">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><img src="/icons/bootstrap/arrow-left.svg"></button>
+                    使用しているオープンソースライブラリ一覧
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>パス</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fluent emoji</td>
+                            <td><a href="https://github.com/microsoft/fluentui-emoji" target="_blank">https://github.com/microsoft/fluentui-emoji</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--
+    TODO: Lazy Load を実装する
+    TODO: Keywordsにイメージタイプと拡張子を含める
+    TODO: SVGでもPNG形式に変換してコピーできるようにする。
+    TODO: JSON data に ユニークIDを追加する
+-->
+
+@if (metadatas == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="flex-box">
+
+        @foreach (var item in metadatas.OrderBy(metadatas => metadatas.Group))
+        {
+            @if(item.Keywords.Contains(searchStr.ToLower()) && item.ImageExt == ".png")
+            {
+                <div class="flex-item" >
+                    <a class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick="@(() => onclick(item))">
+                        <img class="lazyload" data-src="@item.FilePath" />
+                    </a>
+                    <div>@item.Name</div>
+                </div>
+            }
+
+        }
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"><img src="/icons/bootstrap/arrow-left.svg"></button>
+                        @dialogMetaData.Name
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="flex-box">
+                        @foreach(var icons in metadatas)
+                        {
+                            @if(dialogMetaData.Name == icons.Name)
+                            {
+                                <div class="flex-item">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <img class="lazyload" data-src="@icons.FilePath" width="50px">
+                                        </li>
+                                        <li class="list-group-item">
+                                            @icons.ImageType @icons.ImageExt
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a type="button" class="btn btn-secondary" href="@icons.FilePath" download>Download</a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            }
+                        }
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+    private MetaData[]? metadatas;
+    private List<MetaData> metaList = new List<MetaData>();
+    string searchStr = "";
+
+    MetaData dialogMetaData = new MetaData();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        metadatas = await Http.GetFromJsonAsync<MetaData[]>("/icons/emoji/emoji.json");
+        //metaList = await Http.GetFromJsonAsync<List<MetaData>>("/icons/emoji/emoji.json");
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JS.InvokeVoidAsync("lazyload");
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    public class MetaData
+    {
+        public string FilePath { get; set; }
+        public string ImageType { get; set; }
+        public string ImageExt { get; set; }
+        public string Name { get; set; }
+        public string Keywords { get; set; }
+        public string Group { get; set; }
+
+    }
+
+    void onclick(MetaData displayData)
+    {
+        dialogMetaData = displayData;
+    }
+
+}

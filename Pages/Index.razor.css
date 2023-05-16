@@ -1,0 +1,17 @@
+﻿body {
+}
+
+
+.flex-box {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.flex-item {
+    padding: 20px;
+}
+
+.flex-item img {
+    width: 100px;
+}
