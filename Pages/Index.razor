@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/{fileType}"
 @inject HttpClient Http
 @inject IJSRuntime JS;
 @using System.Collections.Generic;
@@ -140,7 +141,7 @@ else
                     <div class="flex-box">
                         @foreach(var icons in metadatas)
                         {
-                            @if(dialogMetaData.Name == icons.Name)
+                            @if(dialogMetaData.Name == icons.Name && ((fileType is not null && fileType == icons.ImageExt.Substring(1)) || fileType is null))
                             {
                                 <div class="flex-item">
                                     <ul class="list-group list-group-flush">
@@ -179,6 +180,9 @@ else
     private MetaData[]? metadatas;
     private List<MetaData> metaList = new List<MetaData>();
     string searchStr = "";
+
+    [Parameter]
+    public string? fileType { get; set; }
 
     MetaData dialogMetaData = new MetaData();
 
