@@ -36,7 +36,11 @@
                 </li>
 -->
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#openSourceModal">オープンソースライブラリ一覧</a>
+                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#whatsThisModal">このサイトについて</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#openSourceModal">オープンソース覧</a>
                 </li>
                 <li>
                     <a class="navbar-brand" href="https://usefuledge.com" target="_blank">
@@ -48,12 +52,36 @@
     </div>
 </nav>
 
-
 <div style="padding-top: 120px;">
+    <!--
     <h3>絵文字サーチ</h3>
     <p>絵文字をPNGやSVGで公開しています。使用しているライブラリはMITライセンスで公開されているものです。詳細はオープンソースライブラリ一覧を参照してください。</p>
+    -->
 </div>
 
+
+<!-- WhatsThisModal -->
+<div class="modal fade" id="whatsThisModal" tabindex="-1" aria-labelledby="whatsThisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="whatsThisModalLabel">
+                    <!--
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"><img src="/icons/bootstrap/arrow-left.svg"></button>
+                    -->
+                    このサイトについて
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>絵文字をPNGやSVGで公開しています。使用しているライブラリはMITライセンスで公開されているものです。詳細はオープンソースライブラリ一覧を参照してください。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- OpenSourceModal -->
@@ -62,7 +90,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="openSourceModalLabel">
+                    <!--
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal"><img src="/icons/bootstrap/arrow-left.svg"></button>
+                    -->
                     使用しているオープンソースライブラリ一覧
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -131,7 +161,9 @@ else
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
+                        <!--
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal"><img src="/icons/bootstrap/arrow-left.svg"></button>
+                        -->
                         @dialogMetaData.Name
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
