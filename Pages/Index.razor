@@ -157,7 +157,7 @@ else
 
         @foreach (var item in metadatas.OrderBy(metadatas => metadatas.Group))
         {
-            @if(item.Keywords.Contains(searchStr.ToLower()) && item.ImageExt == ".png")
+            @if(item.Keywords.ToLower().Contains(searchStr.ToLower()) && item.ImageExt == ".png")
             {
                 <div class="flex-item" >
                     <a class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick="@(() => onclick(item))">
